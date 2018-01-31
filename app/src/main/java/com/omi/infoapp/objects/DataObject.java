@@ -1,10 +1,12 @@
 package com.omi.infoapp.objects;
 
+import io.realm.RealmObject;
+
 /**
  * Created by omar on 1/29/18.
  */
 
-public class DataObject {
+public class DataObject extends RealmObject {
     private String id;
     private String dataText;
     private String dataImage;
