@@ -1,0 +1,2 @@
+# InfoApp
+Info App is an Android project developed using Dagger2, RxJava2, Realm, Retrofit and firebase with MVP structure.   The Main functionality in the project is to select an image from gallery, Compress it and get a blur version of it with keeping it's ALL EXIF (Meta Data) of the original image then upload it to firebase. after that you can see all you posts in a list. the posts will appear even with no internet connection
