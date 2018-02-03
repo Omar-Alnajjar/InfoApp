@@ -7,4 +7,6 @@
 
     <color name="default_background_color">#f7f7f7</color>
     <color name="default_text_color">#fff</color>
+    <color name="dimmed_color">#2d000000</color>
+    <color name="default_hint_color">#c3ffffff</color>
 </resources>

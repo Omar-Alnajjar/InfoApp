@@ -15,11 +15,14 @@ public interface MainActivityMVP {
 
         void showSnackbar(String error);
 
+
     }
 
     interface Presenter {
 
-        void loadData(String lastId);
+        void loadDataOnline(String lastId);
+
+        void loadDataOffline(String lastId);
 
         void rxUnsubscribe();
 
@@ -28,7 +31,8 @@ public interface MainActivityMVP {
 
     interface Model {
 
-        Observable<List<DataObject>> result(String lastId);
+        Observable<List<DataObject>> loadDataOnline(String lastId);
+        Observable<List<DataObject>> loadDataOffline(String lastId);
         Observable<List<DataObject>> saveData(List<DataObject> dataObjects);
 
     }

@@ -12,32 +12,38 @@ import io.realm.RealmResults;
 
 public class InfoLocalStorageImpl implements InfoLocalStorage {
 
-    Realm realm;
 
-    public InfoLocalStorageImpl(Realm realm) {
-        this.realm = realm;
+    public InfoLocalStorageImpl() {
     }
 
     @Override
     public Maybe<List<DataObject>> getInfo() {
-        RealmResults<DataObject> dataObjects = realm.where(DataObject.class).findAll();
-        if(dataObjects == null){
-            return Maybe.empty();
-        }else {
-            return Maybe.just(realm.copyFromRealm(dataObjects));
+        Realm realm = Realm.getDefaultInstance();
+        try {
+            RealmResults<DataObject> dataObjects = realm.where(DataObject.class).findAll();
+            if(dataObjects == null){
+                return Maybe.empty();
+            }else {
+                return Maybe.just(realm.copyFromRealm(dataObjects));
+            }
+        }finally {
+            realm.close();
         }
     }
 
     @Override
     public Observable<List<DataObject>> saveInfo(final List<DataObject> dataObjects) {
-        realm.executeTransactionAsync(new Realm.Transaction() {
-            @Override
-            public void execute(Realm realm) {
-                realm.copyToRealmOrUpdate(dataObjects);
-            }
-        });
-
-
+        Realm realm = Realm.getDefaultInstance();
+        try {
+            realm.executeTransaction(new Realm.Transaction() {
+                @Override
+                public void execute(Realm realm) {
+                    realm.copyToRealmOrUpdate(dataObjects);
+                }
+            });
+        }finally {
+            realm.close();
+        }
         return Observable.just(dataObjects);
     }
 }

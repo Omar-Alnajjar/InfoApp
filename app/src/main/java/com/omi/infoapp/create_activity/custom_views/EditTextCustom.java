@@ -1,4 +1,4 @@
-package com.omi.infoapp.custom_views;
+package com.omi.infoapp.create_activity.custom_views;
 
 import android.content.Context;
 import android.graphics.Typeface;
@@ -9,18 +9,18 @@ import android.util.AttributeSet;
  * Created by omar on 1/29/18.
  */
 
-public class TextViewCustom extends android.support.v7.widget.AppCompatTextView{
-    public TextViewCustom(Context context) {
+public class EditTextCustom extends android.support.v7.widget.AppCompatEditText{
+    public EditTextCustom(Context context) {
         super(context);
         init(context);
     }
 
-    public TextViewCustom(Context context, @Nullable AttributeSet attrs) {
+    public EditTextCustom(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         init(context);
     }
 
-    public TextViewCustom(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    public EditTextCustom(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init(context);
     }

@@ -1,8 +1,7 @@
-package com.omi.infoapp.adapters;
+package com.omi.infoapp.main_activity.adapters;
 
 import android.content.Context;
 import android.content.res.Resources;
-import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
@@ -14,6 +13,7 @@ import android.widget.TextView;
 import com.makeramen.roundedimageview.RoundedTransformationBuilder;
 import com.omi.infoapp.R;
 import com.omi.infoapp.objects.DataObject;
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Transformation;
 
@@ -39,6 +39,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         transformation = new RoundedTransformationBuilder()
                 .borderWidthDp(0)
                 .cornerRadiusDp(20)
+                .scaleType(ImageView.ScaleType.CENTER_CROP)
                 .oval(false)
                 .build();
     }
@@ -57,6 +58,27 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         holder.dataTextView.setText(dataObject.getDataText());
         Picasso.with(context).load(dataObject.getDataImage()).resize(convertDpToPixel(300), convertDpToPixel(365))
                 .transform(transformation).into(holder.dataImageView);
+        Picasso.with(context)
+                .load(dataObject.getDataImageBlur()) // thumbnail url goes here
+                .resize(convertDpToPixel(300), convertDpToPixel(365))
+                .transform(transformation)
+                .centerCrop()
+                .into(holder.dataImageView, new Callback() {
+                    @Override
+                    public void onSuccess() {
+                        Picasso.with(context)
+                                .load(dataObject.getDataImage())
+                                .resize(convertDpToPixel(300), convertDpToPixel(365))
+                                .transform(transformation)
+                                .centerCrop()
+                                .placeholder(holder.dataImageView.getDrawable())
+                                .into(holder.dataImageView);
+                    }
+                    @Override
+                    public void onError() {
+
+                    }
+                });
     }
 
     // total number of rows

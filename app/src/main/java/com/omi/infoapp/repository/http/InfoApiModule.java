@@ -3,6 +3,8 @@ package com.omi.infoapp.repository.http;
 
 import java.io.IOException;
 
+import javax.inject.Singleton;
+
 import dagger.Module;
 import dagger.Provides;
 import okhttp3.HttpUrl;
@@ -18,31 +20,22 @@ import retrofit2.converter.gson.GsonConverterFactory;
 @Module
 public class InfoApiModule {
 
-    public final String BASE_URL = "http://api.openweathermap.org/data/2.5/";
+    public final String BASE_URL = "https://infoapp-1ab0e.firebaseio.com/";
     public final String APP_ID = "74d7b5669a6ea68138d97df2748be1ce";
 
 
     @Provides
+    @Singleton
     public OkHttpClient provideClient() {
 
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
-        interceptor.setLevel(HttpLoggingInterceptor.Level.BASIC);
+        interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
 
-        return new OkHttpClient.Builder().addInterceptor(interceptor).addInterceptor(new Interceptor() {
-            @Override
-            public Response intercept(Chain chain) throws IOException {
-                Request request = chain.request();
-                HttpUrl url = request.url().newBuilder().addQueryParameter(
-                        "appid",
-                        APP_ID
-                ).build();
-                request = request.newBuilder().url(url).build();
-                return chain.proceed(request);
-            }
-        }).build();
+        return new OkHttpClient.Builder().addInterceptor(interceptor).build();
     }
 
     @Provides
+    @Singleton
     public Retrofit provideRetrofit(String baseURL, OkHttpClient client) {
         return new Retrofit.Builder()
                 .baseUrl(baseURL)
@@ -53,6 +46,7 @@ public class InfoApiModule {
     }
 
     @Provides
+    @Singleton
     public InfoApiService provideApiService() {
         return provideRetrofit(BASE_URL, provideClient()).create(InfoApiService.class);
     }

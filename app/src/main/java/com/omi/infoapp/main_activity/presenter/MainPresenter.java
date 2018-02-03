@@ -26,9 +26,9 @@ public class MainPresenter implements MainActivityMVP.Presenter {
     }
 
     @Override
-    public void loadData(String lastId) {
+    public void loadDataOnline(String lastId) {
 
-        disposables.add(model.result(lastId).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+        disposables.add(model.loadDataOnline(lastId).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
 
 
                 .subscribeWith(new DisposableObserver<List<DataObject>>() {
@@ -39,8 +39,10 @@ public class MainPresenter implements MainActivityMVP.Presenter {
                 public void onError(Throwable e) {
                     e.printStackTrace();
                     if (view != null) {
-                        view.showSnackbar("Error getting Info");
+                        view.showSnackbar("Network error");
+                        loadDataOffline(lastId);
                     }
+
                 }
 
                 @Override
@@ -57,6 +59,39 @@ public class MainPresenter implements MainActivityMVP.Presenter {
                     }
                 }
             }));
+    }
+
+    @Override
+    public void loadDataOffline(String lastId) {
+        disposables.add(model.loadDataOffline(lastId).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+
+
+                .subscribeWith(new DisposableObserver<List<DataObject>>() {
+
+
+
+                    @Override
+                    public void onError(Throwable e) {
+                        e.printStackTrace();
+                        if (view != null) {
+                            view.showSnackbar("Local error");
+                        }
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+
+
+                    @Override
+                    public void onNext(List<DataObject> dataObjects) {
+                        if (view != null) {
+                            view.updateData(dataObjects);
+                        }
+                    }
+                }));
     }
 
     @Override

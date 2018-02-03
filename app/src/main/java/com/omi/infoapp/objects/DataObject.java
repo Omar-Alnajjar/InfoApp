@@ -12,6 +12,13 @@ public class DataObject extends RealmObject {
     private String dataImage;
     private String dataImageBlur;
 
+    public DataObject() {
+    }
+
+    public DataObject(String dataText) {
+        this.dataText = dataText;
+    }
+
     public String getId() {
         return id;
     }

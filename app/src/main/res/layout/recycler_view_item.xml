@@ -6,13 +6,15 @@
     <FrameLayout
         android:layout_width="300dp"
         android:layout_height="365dp"
+        android:layout_marginBottom="10dp"
         android:layout_centerHorizontal="true">
         <ImageView
             android:id="@+id/data_image"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:scaleType="centerCrop"
             android:background="@drawable/recycler_view_item_default_background"/>
-        <com.omi.infoapp.custom_views.TextViewCustom
+        <com.omi.infoapp.main_activity.custom_views.TextViewCustom
             android:id="@+id/data_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
