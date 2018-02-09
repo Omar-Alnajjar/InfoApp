@@ -1,12 +1,14 @@
 package com.omi.infoapp.objects;
 
 import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
 
 /**
  * Created by omar on 1/29/18.
  */
 
 public class DataObject extends RealmObject {
+    @PrimaryKey
     private String id;
     private String dataText;
     private String dataImage;

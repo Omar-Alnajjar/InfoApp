@@ -20,9 +20,8 @@ public interface MainActivityMVP {
 
     interface Presenter {
 
-        void loadDataOnline(String lastId);
+        void loadData(String lastId);
 
-        void loadDataOffline(String lastId);
 
         void rxUnsubscribe();
 
@@ -31,8 +30,7 @@ public interface MainActivityMVP {
 
     interface Model {
 
-        Observable<List<DataObject>> loadDataOnline(String lastId);
-        Observable<List<DataObject>> loadDataOffline(String lastId);
+        Observable<List<DataObject>> loadData(String lastId);
         Observable<List<DataObject>> saveData(List<DataObject> dataObjects);
 
     }

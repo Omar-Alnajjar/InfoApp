@@ -36,16 +36,32 @@ public class MainRepositoryImpl implements MainRepository {
 
     @Override
     public Maybe<List<DataObject>> getResultsFromNetwork(String lastId) {
-        Maybe<Map<String, DataObject>> apiResult = infoApiService.getInfo();
+        Maybe<Map<String, DataObject>> apiResult = infoApiService.getInfo().onErrorResumeNext(throwable -> {
+            return Maybe.empty();
+        });
+
         return apiResult.flatMap(new Function<Map<String, DataObject>, Maybe<List<DataObject>>>() {
             @Override
-            public Maybe<List<DataObject>> apply(Map<String, DataObject> dataSnapshots) throws Exception {
-                List<DataObject> dataObjects = new ArrayList<>();
-                dataObjects.addAll(dataSnapshots.values());
+            public Maybe<List<DataObject>> apply(Map<String, DataObject> dataSnapshots){
+                if(dataSnapshots == null){
+                    return Maybe.empty();
+                }
+                List<DataObject> dataObjects = new ArrayList<>(dataSnapshots.values());
+
+                List<String> ids = new ArrayList<>(dataSnapshots.keySet());
+
+                for (int i = 0; i < dataObjects.size(); i++){
+                    dataObjects.get(i).setId(ids.get(i));
+                }
 
                 return Maybe.just(dataObjects);
             }
         });
+    }
+
+    @Override
+    public Observable<List<DataObject>> getResults(String lastId) {
+        return getResultsFromNetwork(lastId).concatWith(getResultsFromMemory(lastId)).toObservable();
     }
 
     @Override

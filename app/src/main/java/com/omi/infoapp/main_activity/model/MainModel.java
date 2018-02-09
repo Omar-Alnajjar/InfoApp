@@ -17,13 +17,8 @@ public class MainModel implements MainActivityMVP.Model {
     }
 
     @Override
-    public Observable<List<DataObject>> loadDataOnline(String lastId) {
-        return repository.getResultsFromNetwork(lastId).toObservable();
-    }
-
-    @Override
-    public Observable<List<DataObject>> loadDataOffline(String lastId) {
-        return repository.getResultsFromMemory(lastId).toObservable();
+    public Observable<List<DataObject>> loadData(String lastId) {
+        return repository.getResults(lastId);
     }
 
     @Override

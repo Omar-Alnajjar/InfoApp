@@ -76,7 +76,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityMVP.V
         adapter = new RecyclerViewAdapter(this, dataObjects);
         recyclerView.setAdapter(adapter);
 
-        presenter.loadDataOnline("");
+        presenter.loadData("");
     }
 
 

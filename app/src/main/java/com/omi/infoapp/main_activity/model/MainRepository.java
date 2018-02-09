@@ -16,6 +16,8 @@ public interface MainRepository {
 
     Maybe<List<DataObject>> getResultsFromNetwork(String lastId);
 
+    Observable<List<DataObject>> getResults(String lastId);
+
 
     Observable<List<DataObject>> saveInfoToDB(List<DataObject> dataObjects);
 }

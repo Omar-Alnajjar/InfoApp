@@ -26,9 +26,9 @@ public class MainPresenter implements MainActivityMVP.Presenter {
     }
 
     @Override
-    public void loadDataOnline(String lastId) {
+    public void loadData(String lastId) {
 
-        disposables.add(model.loadDataOnline(lastId).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+        disposables.add(model.loadData(lastId).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
 
 
                 .subscribeWith(new DisposableObserver<List<DataObject>>() {
@@ -40,7 +40,6 @@ public class MainPresenter implements MainActivityMVP.Presenter {
                     e.printStackTrace();
                     if (view != null) {
                         view.showSnackbar("Network error");
-                        loadDataOffline(lastId);
                     }
 
                 }
@@ -53,45 +52,12 @@ public class MainPresenter implements MainActivityMVP.Presenter {
 
                 @Override
                 public void onNext(List<DataObject> dataObjects) {
-                    if (view != null) {
+                    if (view != null && dataObjects != null && dataObjects.size() > 0)  {
                         view.updateData(dataObjects);
                         model.saveData(dataObjects);
                     }
                 }
             }));
-    }
-
-    @Override
-    public void loadDataOffline(String lastId) {
-        disposables.add(model.loadDataOffline(lastId).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
-
-
-                .subscribeWith(new DisposableObserver<List<DataObject>>() {
-
-
-
-                    @Override
-                    public void onError(Throwable e) {
-                        e.printStackTrace();
-                        if (view != null) {
-                            view.showSnackbar("Local error");
-                        }
-
-                    }
-
-                    @Override
-                    public void onComplete() {
-
-                    }
-
-
-                    @Override
-                    public void onNext(List<DataObject> dataObjects) {
-                        if (view != null) {
-                            view.updateData(dataObjects);
-                        }
-                    }
-                }));
     }
 
     @Override
